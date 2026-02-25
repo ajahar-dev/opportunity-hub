@@ -1,16 +1,22 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profile - Opportunity Hub</title>
+  <title>Create Profile - Opportunity Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="top-nav">
     <a class="brand" href="index.html">Opportunity Hub</a>
     <nav class="nav-actions">
-      <a class="btn btn-outline btn-small" href="index.html">Home</a>
+      <a class="btn btn-outline btn-small" href="index.html"><i class="fas fa-home"></i> Home</a>
+      <button id="themeToggle" class="btn btn-outline btn-small" aria-label="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+      </button>
       <a id="navInternshipsBtn" class="btn btn-dark btn-small hidden" href="dashboard.html">Internships</a>
       <a id="navProfileBtn" class="btn btn-outline btn-small hidden" href="profile.html">Profile</a>
       <a id="navLoginBtn" class="btn btn-primary btn-small hidden" href="login.html">Login / Sign Up</a>
@@ -18,39 +24,45 @@
     </nav>
   </header>
 
-  <h2>Create Profile</h2>
+  <main class="landing">
+    <section class="internships-section" style="max-width: 800px; margin: 0 auto;">
+      <div class="section-header home-header" style="text-align: center;">
+        <h2>Create Profile</h2>
+        <p style="color: var(--text-secondary);">Tell us about yourself to get matched</p>
+      </div>
 
-  <input type="text" id="name" placeholder="Your Name">
-  <input type="text" id="college" placeholder="College">
+      <!-- Original inputs preserved -->
+      <input type="text" id="name" placeholder="Your Name">
+      <input type="text" id="college" placeholder="College">
 
-  <h3>Select Skills</h3>
+      <h3 style="margin-top: 30px;">Select Skills</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+        <label><input type="checkbox" value="HTML"> HTML</label>
+        <label><input type="checkbox" value="CSS"> CSS</label>
+        <label><input type="checkbox" value="JavaScript"> JavaScript</label>
+        <label><input type="checkbox" value="React"> React</label>
+        <label><input type="checkbox" value="Firebase"> Firebase</label>
+        <label><input type="checkbox" value="NodeJS"> NodeJS</label>
+        <label><input type="checkbox" value="NestJS"> NestJS</label>
+        <label><input type="checkbox" value="MERN"> MERN</label>
+        <label><input type="checkbox" value="MEAN"> MEAN</label>
+        <label><input type="checkbox" value="Docker"> Docker</label>
+        <label><input type="checkbox" value="MongoDB"> MongoDB</label>
+        <label><input type="checkbox" value="Rest API"> Rest API</label>
+        <label><input type="checkbox" value="C++"> C++</label>
+        <label><input type="checkbox" value="C#"> C#</label>
+        <label><input type="checkbox" value="Python"> Python</label>
+        <label><input type="checkbox" value="Django"> Django</label>
+      </div>
 
-  <label><input type="checkbox" value="HTML"> HTML</label>
-  <label><input type="checkbox" value="CSS"> CSS</label>
-  <label><input type="checkbox" value="JavaScript"> JavaScript</label>
-  <label><input type="checkbox" value="React"> React</label>
-  <label><input type="checkbox" value="Firebase"> Firebase</label>
-  <label><input type="checkbox" value="NodeJS"> NodeJS</label>
-  <label><input type="checkbox" value="NestJS"> NestJS</label>
-  <label><input type="checkbox" value="MERN"> MERN</label>
-  <label><input type="checkbox" value="MEAN"> MEAN</label>
-  <label><input type="checkbox" value="Docker"> Docker</label>
-  <label><input type="checkbox" value="MongoDB"> MongoDB</label>
-  <label><input type="checkbox" value="Rest API"> Rest API</label>
-  <label><input type="checkbox" value="C++"> C++</label>
-  <label><input type="checkbox" value="C#"> C#</label>
-
-  <br><br>
-  <button id="saveProfile">Save Profile</button>
+      <div style="text-align: center; margin-top: 30px;">
+        <button id="saveProfile" class="btn btn-primary btn-large">
+          <i class="fas fa-save"></i> Save Profile
+        </button>
+      </div>
+    </section>
+  </main>
 
   <script type="module" src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
