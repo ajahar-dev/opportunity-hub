@@ -1,3 +1,4 @@
+// script.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import {
   getAuth,
@@ -98,11 +99,48 @@ function getErrorMessage(err, fallback = "Something went wrong.") {
 
 function setButtonBusy(button, isBusy, busyLabel) {
   if (!button) return;
-  if (!button.dataset.originalLabel) {
-    button.dataset.originalLabel = button.textContent || "";
+  if (!button.dataset.originalHtml) {
+    button.dataset.originalHtml = button.innerHTML || "";
   }
   button.disabled = isBusy;
-  button.textContent = isBusy ? busyLabel : button.dataset.originalLabel;
+  button.textContent = isBusy ? busyLabel : "";
+  if (!isBusy) {
+    button.innerHTML = button.dataset.originalHtml;
+  }
+}
+
+function animateCountUp(element, duration = 1400) {
+  const target = Number(element.dataset.target || 0);
+  const suffix = element.dataset.suffix || "";
+  if (!Number.isFinite(target) || target < 0) return;
+
+  const startTime = performance.now();
+
+  function tick(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const value = Math.floor(target * eased);
+    element.textContent = value.toLocaleString() + suffix;
+
+    if (progress < 1) {
+      requestAnimationFrame(tick);
+    } else {
+      element.textContent = target.toLocaleString() + suffix;
+    }
+  }
+
+  requestAnimationFrame(tick);
+}
+
+function initHeroStatsAnimation() {
+  const counters = document.querySelectorAll(".count-up");
+  if (!counters.length) return;
+
+  counters.forEach((counter, index) => {
+    setTimeout(() => {
+      animateCountUp(counter);
+    }, index * 140);
+  });
 }
 
 function waitForUser() {
@@ -217,7 +255,7 @@ function renderInternships(target, internships) {
     const disabledApply = safeLink === "#";
 
     target.innerHTML += `
-      <div class="card">
+      <div class="home-card">
         <h3>${safeTitle}</h3>
         <p><strong>Company:</strong> ${safeCompany}</p>
         <p class="badge ${badgeClass}">${matchLabel}</p>
@@ -474,3 +512,45 @@ if (resultsDiv) {
 
   loadMatches();
 }
+
+
+// Theme toggle functionality - add at the end of your script.js
+document.addEventListener('DOMContentLoaded', () => {
+  const themeToggle = document.getElementById('themeToggle');
+  const icon = themeToggle ? themeToggle.querySelector('i') : null;
+  const body = document.body;
+
+  // Check for saved theme preference
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme === 'dark') {
+    body.classList.add('dark-theme');
+    if (icon) {
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    }
+  }
+
+  // Toggle theme on button click
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-theme');
+      const isDark = body.classList.contains('dark-theme');
+
+      // Update icon
+      if (icon) {
+        if (isDark) {
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+        } else {
+          icon.classList.remove('fa-sun');
+          icon.classList.add('fa-moon');
+        }
+      }
+
+      // Save preference
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  }
+
+  initHeroStatsAnimation();
+});
