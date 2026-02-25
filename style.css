@@ -1,0 +1,290 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 16px 48px;
+  background: #f6f8fb;
+  color: #1f2937;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 12px;
+}
+
+.brand {
+  color: #0f172a;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.auth-pill {
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 2.2rem;
+}
+
+h2 {
+  margin-bottom: 10px;
+}
+
+h3 {
+  margin: 18px 0 10px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  width: 100%;
+  max-width: 420px;
+  display: block;
+  margin: 10px 0;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+label {
+  display: inline-block;
+  margin: 6px 14px 6px 0;
+}
+
+button,
+.btn {
+  background: #0f62fe;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-right: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.95rem;
+}
+
+button:hover,
+.btn:hover {
+  background: #0043ce;
+}
+
+.btn-outline {
+  background: #ffffff;
+  color: #0f62fe;
+  border: 1px solid #0f62fe;
+}
+
+.btn-outline:hover {
+  background: #e8f0ff;
+}
+
+.btn-dark {
+  background: #111827;
+}
+
+.btn-dark:hover {
+  background: #000000;
+}
+
+.btn-small {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.badge {
+  display: inline-block;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.badge.high {
+  color: #065f46;
+  background: #d1fae5;
+}
+
+.badge.medium {
+  color: #92400e;
+  background: #fef3c7;
+}
+
+.badge.low {
+  color: #991b1b;
+  background: #fee2e2;
+}
+
+.landing {
+  display: grid;
+  gap: 24px;
+}
+
+.hero {
+  background: linear-gradient(135deg, #ffffff 0%, #edf4ff 100%);
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #475569;
+}
+
+.hero-text {
+  max-width: 60ch;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.status-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.internships-section {
+  background: #ffffff;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.home-header {
+  margin-bottom: 10px;
+}
+
+.hero-subtext {
+  margin-top: -4px;
+  margin-bottom: 18px;
+  color: #334155;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-card {
+  background: #f8fbff;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.home-card h3 {
+  margin: 0 0 8px;
+}
+
+.home-card p {
+  margin: 0;
+  color: #334155;
+}
+
+.steps p {
+  margin: 8px 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.modal-card {
+  width: min(500px, 100%);
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #dbe3ef;
+  padding: 18px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+@media (max-width: 640px) {
+  body {
+    padding: 18px 12px 32px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nav-actions {
+    flex-wrap: wrap;
+  }
+
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+}
