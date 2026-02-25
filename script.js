@@ -3,6 +3,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   onAuthStateChanged,
   setPersistence,
   browserLocalPersistence
@@ -30,6 +31,12 @@ const SKILL_ALIASES = {
   reactjs: "react",
   "node.js": "node",
   nodejs: "node",
+  "rest api": "rest api",
+  api: "rest api",
+  "nest.js": "nestjs",
+  nestjs: "nestjs",
+  mern: "mern",
+  mean: "mean",
   "c++": "cpp",
   "c#": "csharp"
 };
@@ -76,6 +83,13 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function normalizeUrl(url) {
+  const value = String(url || "").trim();
+  if (!value || value === "#") return "#";
+  if (/^https?:\/\//i.test(value)) return value;
+  return `https://${value}`;
 }
 
 function getErrorMessage(err, fallback = "Something went wrong.") {
@@ -164,7 +178,7 @@ async function buildInternshipMatches(user) {
       ...data,
       title: data.title || "Internship",
       company: data.company || "Unknown Company",
-      applyLink: data.applyLink || data.link || "#",
+      applyLink: normalizeUrl(data.applyLink || data.link || "#"),
       matchPercent,
       hasSkillCriteria,
       missing,
@@ -172,7 +186,12 @@ async function buildInternshipMatches(user) {
     });
   });
 
-  internships.sort((a, b) => (b.matchPercent ?? -1) - (a.matchPercent ?? -1));
+  internships.sort((a, b) => {
+    const aRank = a.hasSkillCriteria ? 1 : 0;
+    const bRank = b.hasSkillCriteria ? 1 : 0;
+    if (aRank !== bRank) return bRank - aRank;
+    return (b.matchPercent ?? -1) - (a.matchPercent ?? -1);
+  });
   return { status: "ok", internships };
 }
 
@@ -195,6 +214,7 @@ function renderInternships(target, internships) {
     const safeCompany = escapeHtml(job.company);
     const safeGap = escapeHtml(gapLabel);
     const safeRequired = escapeHtml(requiredLabel);
+    const disabledApply = safeLink === "#";
 
     target.innerHTML += `
       <div class="card">
@@ -204,7 +224,7 @@ function renderInternships(target, internships) {
         <p><strong>Required Skills:</strong> ${safeRequired}</p>
         <p><strong>Skill Gap:</strong> ${safeGap}</p>
         <a href="${safeLink}" target="_blank" rel="noopener noreferrer">
-          <button>Apply</button>
+          <button ${disabledApply ? "disabled" : ""}>${disabledApply ? "No Link" : "Apply"}</button>
         </a>
       </div>
     `;
@@ -214,25 +234,25 @@ function renderInternships(target, internships) {
 // ======================
 // INDEX PAGE
 // ======================
-const navAuthState = document.getElementById("navAuthState");
 const navLoginBtn = document.getElementById("navLoginBtn");
 const navProfileBtn = document.getElementById("navProfileBtn");
 const navInternshipsBtn = document.getElementById("navInternshipsBtn");
+const navLogoutBtn = document.getElementById("navLogoutBtn");
 
-if (navAuthState && navLoginBtn && navProfileBtn && navInternshipsBtn) {
-  onAuthStateChanged(auth, async (user) => {
+if (navLoginBtn && navProfileBtn && navInternshipsBtn && navLogoutBtn) {
+  async function updateNavForUser(user) {
     if (!user) {
-      navAuthState.textContent = "Guest";
       navLoginBtn.classList.remove("hidden");
       navLoginBtn.textContent = "Login / Sign Up";
       navProfileBtn.classList.add("hidden");
       navProfileBtn.href = "profile.html";
       navInternshipsBtn.classList.add("hidden");
+      navLogoutBtn.classList.add("hidden");
       return;
     }
 
-    navAuthState.textContent = "Logged In";
     navLoginBtn.classList.add("hidden");
+    navLogoutBtn.classList.remove("hidden");
     navProfileBtn.classList.remove("hidden");
     navProfileBtn.textContent = "Profile";
     navProfileBtn.href = "profile.html";
@@ -247,6 +267,23 @@ if (navAuthState && navLoginBtn && navProfileBtn && navInternshipsBtn) {
     } catch {
       navInternshipsBtn.classList.add("hidden");
     }
+  }
+
+  navLogoutBtn.addEventListener("click", async () => {
+    try {
+      setButtonBusy(navLogoutBtn, true, "Logging out...");
+      await signOut(auth);
+      window.location.href = "index.html";
+    } catch (err) {
+      alert(getErrorMessage(err, "Logout failed."));
+    } finally {
+      setButtonBusy(navLogoutBtn, false, "Logging out...");
+    }
+  });
+
+  updateNavForUser(auth.currentUser).catch(() => {});
+  onAuthStateChanged(auth, (user) => {
+    updateNavForUser(user).catch(() => {});
   });
 }
 
@@ -328,6 +365,7 @@ const nameInput = document.getElementById("name");
 const collegeInput = document.getElementById("college");
 
 if (saveProfileBtn && nameInput && collegeInput) {
+  const profileHeading = document.querySelector("h2");
   (async () => {
     const user = auth.currentUser || await waitForUser();
     if (!user) {
@@ -347,6 +385,14 @@ if (saveProfileBtn && nameInput && collegeInput) {
       document.querySelectorAll('input[type="checkbox"]').forEach((box) => {
         box.checked = selected.has(normalizeSkill(box.value));
       });
+
+      if (hasCompleteProfile(profile)) {
+        if (profileHeading) profileHeading.textContent = "Edit Profile";
+        saveProfileBtn.textContent = "Update Profile";
+      } else {
+        if (profileHeading) profileHeading.textContent = "Create Profile";
+        saveProfileBtn.textContent = "Save Profile";
+      }
     } catch {
       // keep page usable even if preload fails
     }
@@ -374,13 +420,14 @@ if (saveProfileBtn && nameInput && collegeInput) {
         alert("Select at least one skill.");
         return;
       }
+      const uniqueSkills = [...new Set(skills.map((s) => String(s).trim()).filter(Boolean))];
 
       setButtonBusy(saveProfileBtn, true, "Saving...");
       await setDoc(doc(db, "students", user.uid), {
         email: user.email || "",
         name,
         college,
-        skills
+        skills: uniqueSkills
       }, { merge: true });
 
       alert("Profile Saved!");
