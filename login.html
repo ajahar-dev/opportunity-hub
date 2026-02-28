@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
   <title>Login / Signup - Opportunity Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,21 +30,47 @@
       <div class="section-header home-header" style="text-align: center;">
         <h2>Opportunity Hub</h2>
         <h3>Login / Signup</h3>
+        <p style="color: var(--text-secondary); margin-top: 6px;">
+          Internship matching platform for students and recent graduates.
+        </p>
       </div>
 
-      <!-- Original inputs and buttons preserved -->
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
+      <form class="auth-form" autocomplete="on">
+        <label class="field-label" for="email">Email address</label>
+        <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
 
-      <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
-        <button id="signupBtn" class="btn btn-outline"><i class="fas fa-user-plus"></i> Sign Up</button>
-        <button id="loginBtn" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
-      </div>
+        <label class="field-label" for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
+
+        <div class="auth-actions">
+          <button type="button" id="signupBtn" class="btn btn-outline"><i class="fas fa-user-plus"></i> Sign Up</button>
+          <button type="button" id="loginBtn" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+        </div>
+
+        <p class="auth-divider">or</p>
+        <div style="text-align: center;">
+          <button type="button" id="googleSignInBtn" class="btn btn-dark">
+            <i class="fab fa-google"></i> Continue with Google
+          </button>
+        </div>
+      </form>
 
       <p style="text-align: center; margin-top: 25px; color: var(--text-muted); font-size: 0.9rem;">
-        By continuing, you agree to our Terms and Privacy Policy.
+        By continuing, you agree to our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>.
+      </p>
+      <p style="text-align: center; margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">
+        Need help? Contact: <a href="mailto:support@opportunityhub.app">support@opportunityhub.app</a>
       </p>
     </section>
+
+    <footer class="footer">
+      <p>&copy; 2026 Opportunity Hub</p>
+      <div class="footer-links">
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="contact.html">Contact</a>
+      </div>
+    </footer>
   </main>
 
   <script type="module" src="script.js"></script>

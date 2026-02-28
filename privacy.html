@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: https:; connect-src 'self' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://firestore.googleapis.com https://www.googleapis.com https://*.googleapis.com https://*.firebaseio.com https://*.firebaseapp.com; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests">
-  <title>Dashboard - Opportunity Hub</title>
+  <title>Privacy Policy - Opportunity Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -15,30 +15,27 @@
     <a class="brand" href="index.html">Opportunity Hub</a>
     <nav class="nav-actions">
       <a class="btn btn-outline btn-small" href="index.html"><i class="fas fa-home"></i> Home</a>
-      <button id="themeToggle" class="btn btn-outline btn-small" aria-label="Toggle dark mode">
-        <i class="fas fa-moon"></i>
-      </button>
-      <a id="navInternshipsBtn" class="btn btn-dark btn-small hidden" href="dashboard.html">Internships</a>
-      <a id="navProfileBtn" class="btn btn-outline btn-small hidden" href="profile.html">Profile</a>
-      <a id="navLoginBtn" class="btn btn-primary btn-small hidden" href="login.html">Login / Sign Up</a>
-      <button id="navLogoutBtn" class="btn btn-danger btn-small hidden" type="button">Logout</button>
+      <a class="btn btn-outline btn-small" href="login.html">Login</a>
+      <a class="btn btn-dark btn-small" href="contact.html">Contact</a>
     </nav>
   </header>
 
   <main class="landing">
-    <section class="internships-section">
+    <section class="internships-section" style="max-width: 860px; margin: 0 auto;">
       <div class="section-header home-header">
-        <h2>Internship Matches</h2>
-        <p style="color: var(--text-secondary);">Based on your profile and skills</p>
+        <h2>Privacy Policy</h2>
+        <p style="color: var(--text-secondary);">Last updated: February 25, 2026</p>
       </div>
 
-      <!-- Original results container - JS will populate -->
-      <div id="results" class="home-grid" style="margin-top: 20px;">
-        <div class="home-card" style="text-align: center;">
-          <i class="fas fa-spinner fa-pulse" style="font-size: 2rem; color: var(--accent);"></i>
-          <p>Loading matches...</p>
-        </div>
-      </div>
+      <p style="margin-top: 12px; color: var(--text-secondary);">Opportunity Hub collects account and profile data (email, name, college, selected skills) to provide internship matching.</p>
+      <h3>How we use data</h3>
+      <p style="color: var(--text-secondary);">We use your profile to calculate internship matches and improve your dashboard recommendations.</p>
+      <h3>Authentication</h3>
+      <p style="color: var(--text-secondary);">Authentication is managed using Firebase Authentication. Passwords are handled by the provider and are not stored by this website in plain text.</p>
+      <h3>Data storage</h3>
+      <p style="color: var(--text-secondary);">Profile and matching data are stored in Firebase Firestore for app functionality.</p>
+      <h3>Contact</h3>
+      <p style="color: var(--text-secondary);">Questions about privacy: <a href="mailto:support@opportunityhub.app">support@opportunityhub.app</a></p>
     </section>
 
     <footer class="footer">
@@ -50,7 +47,5 @@
       </div>
     </footer>
   </main>
-
-  <script type="module" src="script.js"></script>
 </body>
 </html>

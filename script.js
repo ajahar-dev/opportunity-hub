@@ -4,6 +4,8 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
   signOut,
   onAuthStateChanged,
   setPersistence,
@@ -158,6 +160,16 @@ function hasCompleteProfile(data) {
   const collegeOk = typeof data.college === "string" && data.college.trim().length > 0;
   const skillsOk = Array.isArray(data.skills) && data.skills.length > 0;
   return nameOk && collegeOk && skillsOk;
+}
+
+async function ensureStudentDoc(user) {
+  if (!user) return;
+  await setDoc(doc(db, "students", user.uid), {
+    email: user.email || "",
+    name: "",
+    college: "",
+    skills: []
+  }, { merge: true });
 }
 
 async function routeSignedInUser(user) {
@@ -330,6 +342,7 @@ if (navLoginBtn && navProfileBtn && navInternshipsBtn && navLogoutBtn) {
 // ======================
 const signupBtn = document.getElementById("signupBtn");
 const loginBtn = document.getElementById("loginBtn");
+const googleSignInBtn = document.getElementById("googleSignInBtn");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 
@@ -358,13 +371,7 @@ if (signupBtn && loginBtn && emailInput && passwordInput) {
     try {
       setButtonBusy(signupBtn, true, "Creating...");
       const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-      await setDoc(doc(db, "students", cred.user.uid), {
-        email: cred.user.email,
-        name: "",
-        college: "",
-        skills: []
-      }, { merge: true });
+      await ensureStudentDoc(cred.user);
 
       alert("Account Created");
       window.location.href = "profile.html";
@@ -393,6 +400,23 @@ if (signupBtn && loginBtn && emailInput && passwordInput) {
       setButtonBusy(loginBtn, false, "Logging in...");
     }
   });
+
+  if (googleSignInBtn) {
+    googleSignInBtn.addEventListener("click", async () => {
+      try {
+        const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: "select_account" });
+        setButtonBusy(googleSignInBtn, true, "Opening Google...");
+        const cred = await signInWithPopup(auth, provider);
+        await ensureStudentDoc(cred.user);
+        await routeSignedInUser(cred.user);
+      } catch (err) {
+        alert(getErrorMessage(err, "Google sign-in failed."));
+      } finally {
+        setButtonBusy(googleSignInBtn, false, "Opening Google...");
+      }
+    });
+  }
 }
 
 // ======================
